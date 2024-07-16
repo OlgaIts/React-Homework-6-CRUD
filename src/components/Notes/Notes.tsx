@@ -1,10 +1,10 @@
-import {FormEvent, useEffect, useId, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import update from "../../assets/update.png";
-import close from "../../assets/close.png";
 import arrow from "../../assets/right-arrow.png";
+import {List} from "../List/List";
 import styles from "./Notes.module.scss";
 
-interface ContentProps {
+export interface ContentProps {
   id?: number;
   content?: string;
 }
@@ -18,6 +18,26 @@ export const Notes = () => {
     let response = await fetch(url);
     let result = await response.json();
     setList(result);
+  };
+
+  useEffect(() => {
+    getNotes();
+  }, []);
+
+  const handleFormValueChange = ({
+    target,
+  }: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const {id, value} = target;
+    setForm((prevForm) => ({...prevForm, [id]: value}));
+  };
+
+  const handleDelete = async (id?: number) => {
+    const response = await fetch(`${url}/${id}`, {
+      method: "DELETE",
+    });
+    if (response) {
+      getNotes();
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -40,26 +60,6 @@ export const Notes = () => {
     }
   };
 
-  const handleFormValueChange = ({
-    target,
-  }: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const {id, value} = target;
-    setForm((prevForm) => ({...prevForm, [id]: value}));
-  };
-
-  useEffect(() => {
-    getNotes();
-  }, []);
-
-  const handleDelete = async (id?: number) => {
-    const response = await fetch(`${url}/${id}`, {
-      method: "DELETE",
-    });
-    if (response) {
-      getNotes();
-    }
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.title_wrap}>
@@ -69,20 +69,7 @@ export const Notes = () => {
         </button>
       </div>
 
-      <ul className={styles.list_wrap}>
-        {list.map((item) => (
-          <li key={item.id} className={styles.list_item}>
-            <p>{item.content}</p>
-
-            <button
-              onClick={() => handleDelete(item.id)}
-              className={`${styles.btn} ${styles.delete}`}
-            >
-              <img src={close} alt='' className={styles.img} />
-            </button>
-          </li>
-        ))}
-      </ul>
+      <List onDelete={handleDelete} list={list} />
 
       <form action='' onSubmit={handleSubmit}>
         <p>New Note</p>

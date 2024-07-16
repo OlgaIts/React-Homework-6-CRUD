@@ -1,5 +1,4 @@
-// import styles from "./App.module.css";
-import { Notes } from "./components/Notes/Notes";
+import {Notes} from "./components/Notes/Notes";
 import "./css/global.module.scss";
 
 function App() {

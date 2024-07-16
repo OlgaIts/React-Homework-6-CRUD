@@ -1,0 +1,41 @@
+.img {
+  width: 35px;
+  height: 35px;
+  padding: 4px;
+}
+
+.list_wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  margin-bottom: 30px;
+}
+
+.list_item {
+  position: relative;
+  width: 243px;
+  height: 175px;
+  padding: 10px;
+  border: 1px solid #000;
+}
+
+.btn {
+  display: grid;
+  place-content: center;
+  padding: 4px 5px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.delete {
+  position: absolute;
+  right: -25px;
+  top: -25px;
+  z-index: 99;
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    transform: scale(0.8);
+  }
+}
